@@ -17,6 +17,10 @@ Therefore, it is more relevant to take the written in Goleng [Monstache](https:/
 
 How run that servise [here](https://rwynn.github.io/monstache-site/start/)
 
+## Elasticsearch
+
+https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
+
 # Poetry
 
 Poetry (https://python-poetry.org/) is used to manage app dependencies. You install it globally
