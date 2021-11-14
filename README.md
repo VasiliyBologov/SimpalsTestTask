@@ -13,31 +13,19 @@ To activate the virtual environment (which is automatically created in `.venv` d
 
     . .venv/bin/activate
 
-Create an admin user:
-
-    ./manage.py create-superuser
 
 Run the development server which automatically reloads when it detects changes in the code:
 
-    ./manage.py dev-server
+    ./main.py dev-server
 
 To update versions of dependencies:
 
     poetry update
 
 
-# Run tests
-
-    ./manage.py test
-
-After the tests are run, code coverage files are created in `var/coverage/` directory.
-You can open `var/coverage/index.html` to see HTML formatted coverage stats.
-`coverage.xml` holds coverage report in XML format.
-
-
 # Settings
     
-Configuration options are defined in `config.py` for different environment types. Environment
+Configuration options are defined in `conf.py` for different environment types. Environment
 type is defined by `ENVIRONMENT` option, which is usually set by the corresponding environment
 variable.
 
@@ -50,16 +38,19 @@ See also https://pydantic-docs.helpmanual.io/usage/settings/#parsing-environment
 # Run the web app in a Docker container
 
     # Build the image
-    docker build -t client-portal . -f docker/app.Dockerfile
+    docker build -t simpals-test-task . -f docker/app.Dockerfile
 
     # Run the image
-    docker run -it --rm --name=client_portal -p 80:80 client-portal
+    docker run -it --rm --name=simpals_test_task -p 80:80 simpals-test-task 
+
+    # Run the image on localhost with DB on localhost
+    sudo docker run -it --rm --name=simpals_test_task -p 80:80 --add-host host.docker.internal:host-gateway --env MONGODB_URL=mongodb://host.docker.internal/simpals_test simpals-test-task
 
     # Passing env vars 
-    docker run -it --rm --name=client_portal -p 80:80 --env ENVIRONMENT=staging client-portal
+    docker run -it --rm --name=simpals_test_task -p 80:80 --env ENVIRONMENT=dev simpals-test-task
 
     # Run bash inside the container if needed, using the name 
-    docker exec -it client_portal /bin/bash
+    docker exec -it simpals_test_task /bin/bash
 
 
 # API docs

@@ -1,11 +1,12 @@
 jobs:
   - name: main
-    command: ./main.py update_db
+    command: ./main.py update-db
     schedule:
-      minute: "*/10"
+      minute: "*/3"
       hour: "0"
     failsWhen:
       producesStdout: false
       producesStderr: false
       nonzeroReturn: true
     concurrencyPolicy: Forbid
+    user: root

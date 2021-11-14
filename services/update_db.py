@@ -1,6 +1,7 @@
 import itertools
 import datetime
 import logging
+import time
 import typing as t
 
 import pydantic
@@ -72,25 +73,35 @@ def make_request():
     total = int(adds["total"])
     if int(adds["page_size"]) >= int(adds["total"]):
         for add in adds["adverts"]:
-            incoming_adds.append(requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru',
-                                              auth=(settings.API_KEY, "")).json())
+            req = requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru', auth=(settings.API_KEY, ""))
+            while req.status_code == 429:
+                time.sleep(1)
+                logging.warning('Code: 429. Wait. You are very fast.')
+                req = requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru', auth=(settings.API_KEY, ""))
+            incoming_adds.append(req.json())
+
     else:
         new_adds = requests.get(f'{settings.API_URL}/adverts?page=1',
                                 auth=(settings.API_KEY, "")).json()
         page = 1
         for add in new_adds["adverts"]:
-            incoming_adds.append(
-                requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru',
-                             auth=(settings.API_KEY, "")).json())
+            req = requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru', auth=(settings.API_KEY, ""))
+            while req.status_code == 429:
+                time.sleep(1)
+                logging.warning('Code: 429. Wait. You are very fast.')
+                req = requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru', auth=(settings.API_KEY, ""))
+            incoming_adds.append(req.json())
         while len(incoming_adds) < total:
             page += 1
             new_adds = requests.get(f'{settings.API_URL}/adverts?page={page}',
                                     auth=(settings.API_KEY, "")).json()
             for add in new_adds["adverts"]:
-                incoming_adds.append(
-                    requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru',
-                                 auth=(settings.API_KEY, "")).json())
-
+                req = requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru', auth=(settings.API_KEY, ""))
+                while req.status_code == 429:
+                    time.sleep(1)
+                    logging.warning('Code: 429. Wait. You are very fast.')
+                    req = requests.get(f'{settings.API_URL}/adverts/{add["id"]}?lang=ru', auth=(settings.API_KEY, ""))
+                incoming_adds.append(req.json())
     return update_price(incoming_adds)
 
 

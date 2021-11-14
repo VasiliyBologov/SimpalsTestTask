@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import logging
 import os
 import subprocess
 import sys
@@ -24,10 +25,9 @@ def cli():
 
 
 @cli.command()
-def start_cron():
+def start_yacron():
     """Start the scheduler.
     """
-
     _run_command('yacron --config=crontab.yaml')
 
 
@@ -39,9 +39,9 @@ def start_supervisor():
 
 
 @cli.command()
-def start():
+def start_localy():
     """
-    Start server
+    Start server localy
     :return:
     """
 
@@ -56,7 +56,22 @@ def start():
 
 
 @cli.command()
+def start():
+    """
+    Start server
+    :return:
+    """
+    raise Exception
+    cmd = 'uvicorn server.server:app'
+    # https://github.com/encode/uvicorn/pull/1013
+    cmd += ' --reload --reload-dir=server --reload-dir=services'
+    cmd += f' --port=8000'
+    _run_command(cmd, replace=True)
+
+
+@cli.command()
 def update_db():
+    print('blaaaaaaaaaaaaaaaaaaaa')
     from services.update_db import update_all
     update_all()
 
