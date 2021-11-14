@@ -56,12 +56,11 @@ def start_localy():
 
 
 @cli.command()
-def start():
+def web_server():
     """
     Start server
     :return:
     """
-    raise Exception
     cmd = 'uvicorn server.server:app'
     # https://github.com/encode/uvicorn/pull/1013
     cmd += ' --reload --reload-dir=server --reload-dir=services'
@@ -70,8 +69,13 @@ def start():
 
 
 @cli.command()
+def sync_server():
+    from server.update_server import sinc_server
+    sinc_server()
+
+
+@cli.command()
 def update_db():
-    print('blaaaaaaaaaaaaaaaaaaaa')
     from services.update_db import update_all
     update_all()
 

@@ -1,3 +1,22 @@
+
+
+# Guid to TestTask:
+
+Step 1(done). Download all ads from Johny194 account, send data in json format in response to a request to your API
+Step 2(done). Download all ads from Johny194 account, save MongoDB data.
+Step 3(done). All prices on ads, before saving, which are indicated in EUR convert to MDL at today's rate.
+Step 4(done). Set up ad change tracking for your Johny194 account and contribute them to MongoDB.
+Step 5(done). Synchronize data from MongoDB with Elasticsearch.
+
+## Note for Step 5: 
+There is no point in reinventing the wheel and inventing the synchronization of MongoDB and Elasticsearch.  
+There is a wonderful thing like [mongo-connector](https://github.com/yougov/mongo-connector), but unfortunately it works up to version 3.6.  
+Therefore, it is more relevant to take the written in Goleng [Monstache](https://github.com/rwynn/monstache)
+
+# Monstache
+
+How run that servise [here](https://rwynn.github.io/monstache-site/start/)
+
 # Poetry
 
 Poetry (https://python-poetry.org/) is used to manage app dependencies. You install it globally
@@ -43,9 +62,6 @@ See also https://pydantic-docs.helpmanual.io/usage/settings/#parsing-environment
     # Run the image
     docker run -it --rm --name=simpals_test_task -p 80:80 simpals-test-task 
 
-    # Run the image on localhost with DB on localhost
-    sudo docker run -it --rm --name=simpals_test_task -p 80:80 --add-host host.docker.internal:host-gateway --env MONGODB_URL=mongodb://host.docker.internal/simpals_test simpals-test-task
-
     # Passing env vars 
     docker run -it --rm --name=simpals_test_task -p 80:80 --env ENVIRONMENT=dev simpals-test-task
 
@@ -62,4 +78,3 @@ on prod.
 # FastAPI
 
 We are using sync code in async functions. See https://github.com/tiangolo/fastapi/issues/260#issuecomment-495945630
-
